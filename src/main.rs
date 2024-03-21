@@ -3,20 +3,21 @@ use proconio::input;
 fn main() {
     input! {
         n: usize,
-        mut x: [usize; 5 * n],
+        q: usize,
+        events: [(usize, usize); q],
     }
 
-    for _ in 0..n {
-        let max = x.iter().max().unwrap();
-        let max_index = x.iter().position(|&v| v == *max).unwrap();
-        x.remove(max_index);
-    }
+    let mut counts = vec![0; n];
 
-    for _ in 0..n {
-        let min = x.iter().min().unwrap();
-        let min_index = x.iter().position(|&v| v == *min).unwrap();
-        x.remove(min_index);
+    for (i, x) in events {
+        if i == 1 {
+            counts[x - 1] += 1
+        }
+        if i == 2 {
+            counts[x - 1] += 2
+        }
+        if i == 3 {
+            println!("{}", if counts[x - 1] >= 2 { "Yes" } else { "No" })
+        }
     }
-
-    println!("{}", x.iter().sum::<usize>() as f64 / (3 * n) as f64)
 }
