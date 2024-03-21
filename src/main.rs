@@ -2,32 +2,19 @@ use proconio::input;
 
 fn main() {
     input! {
-        n: usize,
-        a: [usize; n],
+        h: usize,
+        w: usize,
+        a: [[u8; w]; h],
     }
 
-    let mut answer = vec![false; n];
-
-    for i in 0..n {
-        if !answer[i] {
-            answer[a[i] - 1] = true
+    for i in 0..h {
+        for j in 0..w {
+            if a[i][j] == 0 {
+                print!(".")
+            } else {
+                print!("{}", (a[i][j] + 64) as char)
+            }
         }
+        println!()
     }
-
-    let mut count = 0;
-
-    for ans in &answer {
-        if !ans {
-            count += 1
-        }
-    }
-
-    println!("{}", count);
-
-    for i in 0..n {
-        if !answer[i] {
-            print!("{} ", i + 1)
-        }
-    }
-    println!("")
 }
