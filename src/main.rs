@@ -2,47 +2,38 @@ use proconio::input;
 
 fn main() {
     input! {
-        s: String,
+        n: usize,
+        mut a: [[usize; n]; n],
+        b: [[usize; n]; n],
     }
 
-    let mut bx: Option<usize> = None;
-    let mut by: Option<usize> = None;
-    let mut k: Option<usize> = None;
-    let mut rx: Option<usize> = None;
-    let mut ry: Option<usize> = None;
-
-    for (i, c) in s.chars().enumerate() {
-        match c {
-            'B' => {
-                if bx.is_none() {
-                    bx = Some(i + 1);
-                } else if by.is_none() {
-                    by = Some(i + 1);
+    for _ in 0..4 {
+        let mut ok = true;
+        for i in 0..n {
+            for j in 0..n {
+                if a[i][j] == 1 && b[i][j] == 0 {
+                    ok = false;
                 }
             }
-            'K' => {
-                if k.is_none() {
-                    k = Some(i + 1);
-                }
-            }
-            'R' => {
-                if rx.is_none() {
-                    rx = Some(i + 1);
-                } else if ry.is_none() {
-                    ry = Some(i + 1);
-                }
-            }
-            _ => (),
         }
-    }
-
-    if let (Some(bx), Some(by), Some(rx), Some(k), Some(ry)) = (bx, by, rx, k, ry) {
-        if ((bx % 2 == 0 && by % 2 == 1) || (bx % 2 == 1 && by % 2 == 0)) && (rx < k && k < ry) {
+        if ok {
             println!("Yes");
-        } else {
-            println!("No");
+            return;
         }
-    } else {
-        println!("No");
+        a = rotate(a, n);
     }
+
+    println!("No");
+}
+
+fn rotate(a: Vec<Vec<usize>>, n: usize) -> Vec<Vec<usize>> {
+    let mut res = vec![vec![0; n]; n];
+
+    for i in 0..n {
+        for j in 0..n {
+            res[j][n - 1 - i] = a[i][j]
+        }
+    }
+
+    res
 }
