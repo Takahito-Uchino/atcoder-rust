@@ -1,39 +1,29 @@
 use proconio::input;
+use std::cmp::max;
 
 fn main() {
     input! {
         n: usize,
-        mut a: [[usize; n]; n],
-        b: [[usize; n]; n],
+        t: i32,
+        c: [i32; n],
+        r: [i32; n],
     }
 
-    for _ in 0..4 {
-        let mut ok = true;
-        for i in 0..n {
-            for j in 0..n {
-                if a[i][j] == 1 && b[i][j] == 0 {
-                    ok = false;
-                }
-            }
-        }
-        if ok {
-            println!("Yes");
-            return;
-        }
-        a = rotate(a, n);
-    }
-
-    println!("No");
-}
-
-fn rotate(a: Vec<Vec<usize>>, n: usize) -> Vec<Vec<usize>> {
-    let mut res = vec![vec![0; n]; n];
+    let mut tmax = (-1, -1);
+    let mut lmax = (-1, -1);
 
     for i in 0..n {
-        for j in 0..n {
-            res[j][n - 1 - i] = a[i][j]
+        if c[i] == t {
+            tmax = max(tmax, (r[i], (i + 1) as i32));
+        }
+        if c[i] == c[0] {
+            lmax = max(lmax, (r[i], (i + 1) as i32));
         }
     }
 
-    res
+    if tmax.0 != -1 {
+        println!("{}", tmax.1);
+    } else {
+        println!("{}", lmax.1);
+    }
 }
