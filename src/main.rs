@@ -3,21 +3,31 @@ use proconio::input;
 fn main() {
     input! {
         n: usize,
-        q: usize,
-        events: [(usize, usize); q],
+        a: [usize; n],
     }
 
-    let mut counts = vec![0; n];
+    let mut answer = vec![false; n];
 
-    for (i, x) in events {
-        if i == 1 {
-            counts[x - 1] += 1
-        }
-        if i == 2 {
-            counts[x - 1] += 2
-        }
-        if i == 3 {
-            println!("{}", if counts[x - 1] >= 2 { "Yes" } else { "No" })
+    for i in 0..n {
+        if !answer[i] {
+            answer[a[i] - 1] = true
         }
     }
+
+    let mut count = 0;
+
+    for ans in &answer {
+        if !ans {
+            count += 1
+        }
+    }
+
+    println!("{}", count);
+
+    for i in 0..n {
+        if !answer[i] {
+            print!("{} ", i + 1)
+        }
+    }
+    println!("")
 }
