@@ -1,29 +1,31 @@
-use proconio::input;
-use std::cmp::max;
+use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
-        n: usize,
-        t: i32,
-        c: [i32; n],
-        r: [i32; n],
+        h: isize,
+        w: isize,
+        a: [Chars; h],
+        b: [Chars; h],
     }
 
-    let mut tmax = (-1, -1);
-    let mut lmax = (-1, -1);
-
-    for i in 0..n {
-        if c[i] == t {
-            tmax = max(tmax, (r[i], (i + 1) as i32));
+    for s in 0..h {
+        for t in 0..w {
+            let mut ok = true;
+            for i in 0..h {
+                for j in 0..w {
+                    if a[((i - s + h) % h) as usize][((j - t + w) % w) as usize]
+                        != b[i as usize][j as usize]
+                    {
+                        ok = false;
+                    }
+                }
+            }
+            if ok {
+                println!("Yes");
+                return;
+            }
         }
-        if c[i] == c[0] {
-            lmax = max(lmax, (r[i], (i + 1) as i32));
-        }
     }
 
-    if tmax.0 != -1 {
-        println!("{}", tmax.1);
-    } else {
-        println!("{}", lmax.1);
-    }
+    println!("No");
 }
