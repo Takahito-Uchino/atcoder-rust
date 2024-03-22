@@ -2,30 +2,26 @@ use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
-        h: isize,
-        w: isize,
-        a: [Chars; h],
-        b: [Chars; h],
+        n: usize,
+        a: [Chars; n],
     }
 
-    for s in 0..h {
-        for t in 0..w {
-            let mut ok = true;
-            for i in 0..h {
-                for j in 0..w {
-                    if a[((i - s + h) % h) as usize][((j - t + w) % w) as usize]
-                        != b[i as usize][j as usize]
-                    {
-                        ok = false;
-                    }
-                }
-            }
-            if ok {
-                println!("Yes");
-                return;
-            }
+    print!("{}", a[1][0]);
+    for i in 0..n - 1 {
+        print!("{}", a[0][i]);
+    }
+    println!();
+
+    for i in 1..n - 1 {
+        print!("{}", a[i + 1][0]);
+        for j in 1..n - 1 {
+            print!("{}", a[i][j]);
         }
+        println!("{}", a[i - 1][n - 1]);
     }
 
-    println!("No");
+    for i in 1..n {
+        print!("{}", a[n - 1][i]);
+    }
+    println!("{}", a[n - 2][n - 1]);
 }
