@@ -1,27 +1,48 @@
-use proconio::{input, marker::Chars};
+use proconio::input;
 
 fn main() {
     input! {
         n: usize,
-        a: [Chars; n],
+        _: usize,
     }
 
-    print!("{}", a[1][0]);
-    for i in 0..n - 1 {
-        print!("{}", a[0][i]);
-    }
-    println!();
+    let mut p = Vec::new();
+    let mut c = Vec::new();
+    let mut f = Vec::new();
 
-    for i in 1..n - 1 {
-        print!("{}", a[i + 1][0]);
-        for j in 1..n - 1 {
-            print!("{}", a[i][j]);
+    for _ in 0..n {
+        input! {
+            price: usize,
+            count: usize,
+            functions: [usize; count],
         }
-        println!("{}", a[i - 1][n - 1]);
+
+        p.push(price);
+        c.push(count);
+        f.push(functions);
     }
 
-    for i in 1..n {
-        print!("{}", a[n - 1][i]);
+    for i in 0..n {
+        for j in 0..n {
+            if i != j {
+                let mut ok = true;
+                if p[i] < p[j] {
+                    ok = false;
+                }
+                for v in &f[i] {
+                    if !f[j].contains(v) {
+                        ok = false;
+                    }
+                }
+                if ok && p[i] == p[j] && f[i].len() >= f[j].len() {
+                    ok = false;
+                }
+                if ok {
+                    println!("Yes");
+                    return;
+                }
+            }
+        }
     }
-    println!("{}", a[n - 2][n - 1]);
+    println!("No");
 }
