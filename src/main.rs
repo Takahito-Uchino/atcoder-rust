@@ -1,23 +1,27 @@
-use std::{collections::HashSet, iter::FromIterator};
-
 use proconio::input;
 
 fn main() {
     input! {
-        n: usize,
-        k: usize,
-        a: [usize; n],
+        w: usize,
+        b: usize,
     }
 
-    let mut total = 0;
+    let t = "wbwbwwbwbwbw".chars().collect::<Vec<_>>();
 
-    let a_set: HashSet<usize> = HashSet::from_iter(a.iter().cloned());
-
-    for i in a_set {
-        if k >= i {
-            total += i;
+    for i in 0..12 {
+        let (mut nw, mut nb) = (0, 0);
+        for j in 0..(w + b) {
+            if t[(i + j) % 12] == 'w' {
+                nw += 1;
+            } else {
+                nb += 1;
+            }
+        }
+        if w == nw && b == nb {
+            println!("Yes");
+            return;
         }
     }
 
-    println!("{}", (1 + k) * k / 2 - total);
+    println!("No");
 }
