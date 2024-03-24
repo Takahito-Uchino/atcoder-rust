@@ -3,29 +3,43 @@ use proconio::input;
 fn main() {
     input! {
         n: usize,
-        m: usize,
-        ab: [(usize, usize); m],
     }
 
-    let mut strongest = vec![true; n];
+    let mut a = Vec::new();
 
-    for (_, b) in ab {
-        strongest[b - 1] = false;
+    for _ in 0..n {
+        input! {
+            c: usize,
+            vets: [usize; c],
+        }
+        a.push(vets);
     }
 
-    let mut count = 0;
-    let mut nums = Vec::new();
+    input! {
+        x: usize,
+    }
+
+    let mut is_vet = Vec::new();
 
     for i in 0..n {
-        if strongest[i] {
-            count += 1;
-            nums.push(i + 1);
+        if a[i].contains(&x) {
+            is_vet.push(i);
         }
     }
 
-    if count == 1 {
-        println!("{}", nums[0]);
-    } else {
-        println!("-1");
+    let mut cmin = 37;
+    for i in &is_vet {
+        cmin = cmin.min(a[*i].len());
+    }
+
+    let mut answer = Vec::new();
+    for i in &is_vet {
+        if a[*i].len() == cmin {
+            answer.push(i + 1);
+        }
+    }
+    println!("{}", answer.len());
+    for ans in answer {
+        print!("{} ", ans);
     }
 }
