@@ -1,41 +1,31 @@
-use proconio::{input, marker::Chars};
+use proconio::input;
 
 fn main() {
     input! {
         n: usize,
         m: usize,
-        s: [Chars; n],
+        ab: [(usize, usize); m],
     }
 
-    let mut answer = Vec::new();
+    let mut strongest = vec![true; n];
 
-    for i in 0..n - 8 {
-        for j in 0..m - 8 {
-            let mut is_code = true;
-            for k in 0..8 {
-                for l in 0..8 {
-                    if k < 3 && l < 3 && s[i + k][j + l] == '.' {
-                        is_code = false;
-                    } else if k > 5 && l > 5 && s[i + k][j + l] == '.' {
-                        is_code = false;
-                    } else if k == 3 && l < 4 && s[i + k][j + l] == '#' {
-                        is_code = false;
-                    } else if k == 5 && l > 4 && s[i + k][j + l] == '#' {
-                        is_code = false;
-                    } else if k < 4 && l == 3 && s[i + k][j + l] == '#' {
-                        is_code = false;
-                    } else if k > 4 && l == 5 && s[i + k][j + l] == '#' {
-                        is_code = false;
-                    }
-                }
-            }
-            if is_code {
-                answer.push((i + 1, j + 1));
-            }
+    for (_, b) in ab {
+        strongest[b - 1] = false;
+    }
+
+    let mut count = 0;
+    let mut nums = Vec::new();
+
+    for i in 0..n {
+        if strongest[i] {
+            count += 1;
+            nums.push(i + 1);
         }
     }
 
-    for ans in answer {
-        println!("{} {}", ans.0, ans.1);
+    if count == 1 {
+        println!("{}", nums[0]);
+    } else {
+        println!("-1");
     }
 }
