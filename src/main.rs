@@ -1,27 +1,39 @@
-use proconio::input;
+use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
-        w: usize,
-        b: usize,
+        n: usize,
+        d: usize,
+        s: [Chars; n],
     }
 
-    let t = "wbwbwwbwbwbw".chars().collect::<Vec<_>>();
+    let mut vacations = vec![false; d];
 
-    for i in 0..12 {
-        let (mut nw, mut nb) = (0, 0);
-        for j in 0..(w + b) {
-            if t[(i + j) % 12] == 'w' {
-                nw += 1;
-            } else {
-                nb += 1;
+    for i in 0..d {
+        let mut is_vacation = true;
+        for j in 0..n {
+            if s[j][i] == 'x' {
+                is_vacation = false;
             }
         }
-        if w == nw && b == nb {
-            println!("Yes");
-            return;
+        if is_vacation {
+            vacations[i] = true;
         }
     }
 
-    println!("No");
+    let mut answer = Vec::new();
+    let mut current = 0;
+    for i in 0..d {
+        if vacations[i] {
+            current += 1;
+        } else {
+            answer.push(current);
+            current = 0;
+        }
+        if i == d - 1 {
+            answer.push(current);
+        }
+    }
+
+    println!("{}", answer.iter().max().unwrap());
 }
