@@ -3,37 +3,39 @@ use proconio::{input, marker::Chars};
 fn main() {
     input! {
         n: usize,
-        d: usize,
+        m: usize,
         s: [Chars; n],
     }
 
-    let mut vacations = vec![false; d];
+    let mut answer = Vec::new();
 
-    for i in 0..d {
-        let mut is_vacation = true;
-        for j in 0..n {
-            if s[j][i] == 'x' {
-                is_vacation = false;
+    for i in 0..n - 8 {
+        for j in 0..m - 8 {
+            let mut is_code = true;
+            for k in 0..8 {
+                for l in 0..8 {
+                    if k < 3 && l < 3 && s[i + k][j + l] == '.' {
+                        is_code = false;
+                    } else if k > 5 && l > 5 && s[i + k][j + l] == '.' {
+                        is_code = false;
+                    } else if k == 3 && l < 4 && s[i + k][j + l] == '#' {
+                        is_code = false;
+                    } else if k == 5 && l > 4 && s[i + k][j + l] == '#' {
+                        is_code = false;
+                    } else if k < 4 && l == 3 && s[i + k][j + l] == '#' {
+                        is_code = false;
+                    } else if k > 4 && l == 5 && s[i + k][j + l] == '#' {
+                        is_code = false;
+                    }
+                }
+            }
+            if is_code {
+                answer.push((i + 1, j + 1));
             }
         }
-        if is_vacation {
-            vacations[i] = true;
-        }
     }
 
-    let mut answer = Vec::new();
-    let mut current = 0;
-    for i in 0..d {
-        if vacations[i] {
-            current += 1;
-        } else {
-            answer.push(current);
-            current = 0;
-        }
-        if i == d - 1 {
-            answer.push(current);
-        }
+    for ans in answer {
+        println!("{} {}", ans.0, ans.1);
     }
-
-    println!("{}", answer.iter().max().unwrap());
 }
