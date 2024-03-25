@@ -2,20 +2,15 @@ use proconio::input;
 
 fn main() {
     input! {
-        m: usize,
-        d: [usize; m],
+        n: usize,
+        mut a: [usize; n],
     }
 
-    let mid = (d.iter().sum::<usize>() + 1) / 2;
+    a.sort();
 
-    let mut current = 0;
-
-    for i in 0..m {
-        if mid > current && mid <= current + d[i] {
-            println!("{} {}", i + 1, mid - current);
-            return;
-        } else {
-            current += d[i];
+    for i in 0..n - 1 {
+        if a[i] + 1 != a[i + 1] {
+            println!("{}", a[i] + 1);
         }
     }
 }
