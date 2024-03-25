@@ -5,44 +5,27 @@ fn main() {
         n: usize,
     }
 
-    let mut a = Vec::new();
-    let mut b = Vec::new();
-    let mut c = Vec::new();
-    let mut d = Vec::new();
+    let mut answer = String::new();
 
-    for _ in 0..n {
-        input! {
-            an: usize,
-            bn: usize,
-            cn: usize,
-            dn: usize,
-        }
-        a.push(an);
-        b.push(bn);
-        c.push(cn);
-        d.push(dn);
-    }
+    let mut divisors = Vec::new();
 
-    let b_max = b.iter().max().unwrap();
-    let d_max = d.iter().max().unwrap();
-
-    let mut s = vec![vec![false; *d_max]; *b_max];
-
-    for i in 0..n {
-        for j in a[i]..b[i] {
-            for k in c[i]..d[i] {
-                s[j][k] = true;
-            }
+    for i in 1..=9 {
+        if n % i == 0 {
+            divisors.push(i);
         }
     }
 
-    let mut answer = 0;
-
-    for s1 in s {
-        for s2 in s1 {
-            if s2 {
-                answer += 1;
+    for i in 0..=n {
+        let mut jj = false;
+        for j in &divisors {
+            if i % (n / j) == 0 {
+                answer.push_str(&j.to_string());
+                jj = true;
+                break;
             }
+        }
+        if !jj {
+            answer.push_str("-");
         }
     }
 
