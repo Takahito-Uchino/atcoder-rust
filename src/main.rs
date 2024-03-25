@@ -1,33 +1,27 @@
-use proconio::input;
+use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
-        n: usize,
+        s: Chars,
     }
 
-    let mut answer = String::new();
+    let mut lengths = Vec::new();
 
-    let mut divisors = Vec::new();
+    lengths.push(1);
 
-    for i in 1..=9 {
-        if n % i == 0 {
-            divisors.push(i);
-        }
-    }
-
-    for i in 0..=n {
-        let mut jj = false;
-        for j in &divisors {
-            if i % (n / j) == 0 {
-                answer.push_str(&j.to_string());
-                jj = true;
-                break;
+    for i in 0..s.len() - 1 {
+        for j in i + 1..s.len() {
+            let mut is_rotate = true;
+            for k in i..=j {
+                if s[k] != s[j - (k - i)] {
+                    is_rotate = false;
+                }
+            }
+            if is_rotate {
+                lengths.push(j - i + 1);
             }
         }
-        if !jj {
-            answer.push_str("-");
-        }
     }
 
-    println!("{}", answer);
+    println!("{}", lengths.iter().max().unwrap());
 }
