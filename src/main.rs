@@ -1,27 +1,31 @@
-use proconio::{input, marker::Chars};
+use proconio::input;
 
 fn main() {
     input! {
-        s: Chars,
+        n: usize,
+        x: usize,
+        a: [usize; n - 1],
     }
 
-    let mut lengths = Vec::new();
+    let total = a.iter().sum::<usize>();
+    let max = a.iter().max().unwrap();
+    let min = a.iter().min().unwrap();
 
-    lengths.push(1);
+    if x > total - min {
+        println!("-1");
+        return;
+    }
 
-    for i in 0..s.len() - 1 {
-        for j in i + 1..s.len() {
-            let mut is_rotate = true;
-            for k in i..=j {
-                if s[k] != s[j - (k - i)] {
-                    is_rotate = false;
-                }
-            }
-            if is_rotate {
-                lengths.push(j - i + 1);
-            }
+    for i in 0..=100 {
+        if i < *min && x <= total - max {
+            println!("{}", i);
+            return;
+        } else if i <= *max && x <= total + i - max - min {
+            println!("{}", i);
+            return;
+        } else if i > *max && x <= total - min {
+            println!("{}", i);
+            return;
         }
     }
-
-    println!("{}", lengths.iter().max().unwrap());
 }
