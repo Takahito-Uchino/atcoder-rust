@@ -1,31 +1,32 @@
-use proconio::input;
+use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
         n: usize,
-        x: usize,
-        a: [usize; n - 1],
+        m: usize,
+        s: Chars,
+        t: Chars,
     }
 
-    let total = a.iter().sum::<usize>();
-    let max = a.iter().max().unwrap();
-    let min = a.iter().min().unwrap();
+    let mut is_prefix = true;
+    let mut is_postfix = true;
 
-    if x > total - min {
-        println!("-1");
-        return;
-    }
-
-    for i in 0..=100 {
-        if i < *min && x <= total - max {
-            println!("{}", i);
-            return;
-        } else if i <= *max && x <= total + i - max - min {
-            println!("{}", i);
-            return;
-        } else if i > *max && x <= total - min {
-            println!("{}", i);
-            return;
+    for i in 0..n {
+        if s[i] != t[i] {
+            is_prefix = false;
         }
+        if s[n - 1 - i] != t[m - 1 - i] {
+            is_postfix = false;
+        }
+    }
+
+    if is_prefix && is_postfix {
+        println!("0");
+    } else if is_prefix {
+        println!("1");
+    } else if is_postfix {
+        println!("2");
+    } else {
+        println!("3");
     }
 }
