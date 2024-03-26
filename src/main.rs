@@ -3,30 +3,39 @@ use proconio::{input, marker::Chars};
 fn main() {
     input! {
         n: usize,
-        m: usize,
-        s: Chars,
-        t: Chars,
+        s: [Chars; n],
     }
 
-    let mut is_prefix = true;
-    let mut is_postfix = true;
+    let mut wins = vec![0; n];
 
     for i in 0..n {
-        if s[i] != t[i] {
-            is_prefix = false;
-        }
-        if s[n - 1 - i] != t[m - 1 - i] {
-            is_postfix = false;
+        for j in 0..n {
+            if s[i][j] == 'o' {
+                wins[i] += 1;
+            }
         }
     }
 
-    if is_prefix && is_postfix {
-        println!("0");
-    } else if is_prefix {
-        println!("1");
-    } else if is_postfix {
-        println!("2");
-    } else {
-        println!("3");
+    let mut bucket = vec![Vec::new(); n];
+
+    for i in 0..n {
+        bucket[wins[i]].push(i);
     }
+
+    let mut answer = Vec::new();
+
+    for i in (0..n).rev() {
+        for &j in &bucket[i] {
+            answer.push(j + 1);
+        }
+    }
+
+    println!(
+        "{}",
+        answer
+            .iter()
+            .map(|x| x.to_string())
+            .collect::<Vec<String>>()
+            .join(" ")
+    );
 }
