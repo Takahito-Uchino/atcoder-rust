@@ -1,20 +1,21 @@
-use std::collections::HashSet;
-
-use proconio::{input, marker::Chars};
+use proconio::input;
 
 fn main() {
     input! {
-        s: Chars,
+        mut n: usize,
     }
 
-    let mut s_set = HashSet::new();
-
-    for i in 0..s.len() {
-        for j in i..s.len() {
-            let slice = &s[i..j + 1];
-            s_set.insert(slice);
-        }
+    while n % 2 == 0 {
+        n /= 2;
     }
 
-    println!("{}", s_set.len())
+    while n % 3 == 0 {
+        n /= 3;
+    }
+
+    if n == 1 {
+        println!("Yes")
+    } else {
+        println!("No")
+    }
 }
