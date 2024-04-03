@@ -1,35 +1,28 @@
-use proconio::{input, marker::Chars};
+use std::collections::HashMap;
+
+use proconio::input;
 
 fn main() {
     input! {
-        s: Chars,
+        s: String,
     }
 
-    let (mut count_a, mut count_b, mut count_c) = (0, 0, 0);
+    let mut counts = HashMap::new();
 
-    for c in &s {
-        match c {
-            'A' => count_a += 1,
-            'B' => count_b += 1,
-            'C' => count_c += 1,
-            _ => unreachable!(),
+    for c in s.chars() {
+        *counts.entry(c).or_insert(0) += 1;
+    }
+
+    let mut answer = 'a';
+    let mut max_count = 0;
+    for c in 'a'..='z' {
+        if let Some(&count) = counts.get(&c) {
+            if count > max_count {
+                max_count = count;
+                answer = c;
+            }
         }
     }
 
-    let mut answer = Vec::new();
-    for _ in 0..count_a {
-        answer.push('A');
-    }
-    for _ in 0..count_b {
-        answer.push('B');
-    }
-    for _ in 0..count_c {
-        answer.push('C');
-    }
-
-    if &answer == &s {
-        println!("Yes");
-    } else {
-        println!("No");
-    }
+    println!("{}", answer);
 }
