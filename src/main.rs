@@ -1,28 +1,40 @@
-use std::collections::HashMap;
-
 use proconio::input;
 
 fn main() {
     input! {
-        s: String,
+        h: usize,
+        w: usize,
+        n: usize,
     }
 
-    let mut counts = HashMap::new();
+    let mut grid = vec![vec![false; w]; h];
 
-    for c in s.chars() {
-        *counts.entry(c).or_insert(0) += 1;
-    }
+    let dx: Vec<isize> = vec![-1, 0, 1, 0];
+    let dy: Vec<isize> = vec![0, 1, 0, -1];
 
-    let mut answer = 'a';
-    let mut max_count = 0;
-    for c in 'a'..='z' {
-        if let Some(&count) = counts.get(&c) {
-            if count > max_count {
-                max_count = count;
-                answer = c;
-            }
+    let (mut x, mut y) = (0isize, 0isize);
+    let mut m: isize = 0;
+
+    for _ in 0..n {
+        let ux = x.rem_euclid(h as isize) as usize;
+        let uy = y.rem_euclid(w as isize) as usize;
+
+        if grid[ux][uy] == false {
+            grid[ux][uy] = true;
+            m += 1;
+        } else {
+            grid[ux][uy] = false;
+            m += 3;
         }
+        m %= 4;
+        x += dx[m as usize];
+        y += dy[m as usize];
     }
 
-    println!("{}", answer);
+    for i in 0..h {
+        for j in 0..w {
+            print!("{}", if grid[i][j] { '#' } else { '.' })
+        }
+        println!();
+    }
 }
