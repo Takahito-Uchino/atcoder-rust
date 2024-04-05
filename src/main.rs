@@ -2,10 +2,17 @@ use proconio::input;
 
 fn main() {
     input! {
-        n: usize,
+        n: String,
     }
-    for i in (0..10).rev() {
-        print!("{}", n / 2usize.pow(i) % 2);
+
+    let length = n.len();
+    let mut answer = 0;
+
+    for (i, c) in n.chars().enumerate() {
+        if c == '1' {
+            answer += 2usize.pow((length - 1 - i) as u32);
+        }
     }
-    println!()
+
+    println!("{}", answer);
 }
