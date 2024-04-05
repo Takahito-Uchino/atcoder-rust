@@ -2,17 +2,18 @@ use proconio::input;
 
 fn main() {
     input! {
-        n: String,
+        n: usize,
+        k: usize,
     }
 
-    let length = n.len();
-    let mut answer = 0;
+    let mut count = 0;
 
-    for (i, c) in n.chars().enumerate() {
-        if c == '1' {
-            answer += 2usize.pow((length - 1 - i) as u32);
+    for r in 1..=n {
+        for b in 1..=n {
+            if k <= n + r + b && k >= 1 + r + b {
+                count += 1;
+            }
         }
     }
-
-    println!("{}", answer);
+    println!("{}", count);
 }
