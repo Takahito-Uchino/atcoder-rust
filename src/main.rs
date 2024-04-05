@@ -3,16 +3,16 @@ use proconio::input;
 fn main() {
     input! {
         n: usize,
-        k: usize,
-        p: [usize; n],
-        q: [usize; n],
+        a: [usize; n],
     }
 
-    for i in &p {
-        for j in &q {
-            if i + j == k {
-                println!("Yes");
-                return;
+    for i in 0..n {
+        for j in i + 1..n {
+            for k in j + 1..n {
+                if &a[i] + &a[j] + &a[k] == 1000 {
+                    println!("Yes");
+                    return;
+                }
             }
         }
     }
