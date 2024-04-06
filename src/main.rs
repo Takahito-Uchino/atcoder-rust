@@ -2,39 +2,27 @@ use proconio::input;
 
 fn main() {
     input! {
-        h: usize,
-        w: usize,
         n: usize,
-        abcd: [(usize, usize, usize, usize); n],
+        a: [usize; n],
+        d: usize,
+        lr: [(usize, usize); d],
     }
 
-    let mut s = vec![vec![0; w + 2]; h + 2];
+    let mut p = vec![0; n + 1];
 
-    for (a, b, c, d) in abcd {
-        s[a][b] += 1;
-        s[c + 1][d + 1] += 1;
-        s[c + 1][b] -= 1;
-        s[a][d + 1] -= 1;
+    p[1] = a[0];
+    for i in 2..=n {
+        p[i] = p[i - 1].max(a[i - 1]);
     }
 
-    let mut t = vec![vec![0; w + 2]; h + 2];
+    let mut q = vec![0; n + 1];
 
-    for i in 1..=h {
-        for j in 1..=w {
-            t[i][j] = t[i][j - 1] + s[i][j];
-        }
+    q[n] = a[n - 1];
+    for i in (1..n).rev() {
+        q[i] = q[i + 1].max(a[i - 1]);
     }
 
-    for j in 1..=w {
-        for i in 1..=h {
-            t[i][j] += t[i - 1][j];
-        }
-    }
-
-    for i in 1..=h {
-        for j in 1..=w {
-            print!("{} ", t[i][j]);
-        }
-        println!()
+    for (l, r) in lr {
+        println!("{}", p[l - 1].max(q[r + 1]));
     }
 }
