@@ -2,37 +2,28 @@ use proconio::input;
 
 fn main() {
     input! {
+        d: usize,
         n: usize,
-        a: [usize; n],
-        q: usize,
-        lr: [(usize, usize); q],
+        lr: [(usize, usize); n],
     }
 
-    let mut counts = Vec::new();
-
-    counts.push(if a[0] == 1 { 1 } else { 0 });
-
-    for i in 1..n {
-        counts.push(if a[i] == 1 {
-            counts[i - 1] + 1
-        } else {
-            counts[i - 1]
-        });
-    }
+    let mut attendances = vec![0; d];
 
     for (l, r) in lr {
-        let is_true = if l == 1 {
-            counts[r - 1]
-        } else {
-            counts[r - 1] - counts[l - 2]
-        };
-        let is_false = r - l + 1 - is_true;
-        if is_true > is_false {
-            println!("win");
-        } else if is_true < is_false {
-            println!("lose");
-        } else {
-            println!("draw");
+        attendances[l - 1] += 1;
+        if r < d {
+            attendances[r] -= 1;
         }
+    }
+
+    let mut answer = vec![0; d];
+
+    answer[0] = attendances[0];
+    for i in 1..d {
+        answer[i] = answer[i - 1] + attendances[i];
+    }
+
+    for ans in answer {
+        println!("{}", ans);
     }
 }
