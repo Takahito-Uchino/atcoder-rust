@@ -3,24 +3,36 @@ use proconio::input;
 fn main() {
     input! {
         n: usize,
-        q: usize,
         a: [usize; n],
+        q: usize,
         lr: [(usize, usize); q],
     }
 
-    let mut totals = Vec::new();
+    let mut counts = Vec::new();
 
-    totals.push(a[0]);
+    counts.push(if a[0] == 1 { 1 } else { 0 });
 
     for i in 1..n {
-        totals.push(totals[i - 1] + a[i]);
+        counts.push(if a[i] == 1 {
+            counts[i - 1] + 1
+        } else {
+            counts[i - 1]
+        });
     }
 
     for (l, r) in lr {
-        if l == 1 {
-            println!("{}", totals[r - 1]);
+        let is_true = if l == 1 {
+            counts[r - 1]
         } else {
-            println!("{}", totals[r - 1] - totals[l - 2]);
+            counts[r - 1] - counts[l - 2]
+        };
+        let is_false = r - l + 1 - is_true;
+        if is_true > is_false {
+            println!("win");
+        } else if is_true < is_false {
+            println!("lose");
+        } else {
+            println!("draw");
         }
     }
 }
