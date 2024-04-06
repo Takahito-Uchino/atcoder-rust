@@ -2,28 +2,28 @@ use proconio::input;
 
 fn main() {
     input! {
-        d: usize,
+        t: usize,
         n: usize,
-        lr: [(usize, usize); n],
+        lr:[(usize, usize); n],
     }
 
-    let mut attendances = vec![0; d];
+    let mut rise_or_fall = vec![0; t];
 
     for (l, r) in lr {
-        attendances[l - 1] += 1;
-        if r < d {
-            attendances[r] -= 1;
+        rise_or_fall[l] += 1;
+        if r < t {
+            rise_or_fall[r] -= 1;
         }
     }
 
-    let mut answer = vec![0; d];
+    let mut answers = vec![0; t];
 
-    answer[0] = attendances[0];
-    for i in 1..d {
-        answer[i] = answer[i - 1] + attendances[i];
+    answers[0] = rise_or_fall[0];
+    for i in 1..t {
+        answers[i] = answers[i - 1] + rise_or_fall[i];
     }
 
-    for ans in answer {
+    for ans in answers {
         println!("{}", ans);
     }
 }
