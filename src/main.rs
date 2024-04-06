@@ -2,28 +2,31 @@ use proconio::input;
 
 fn main() {
     input! {
-        h: usize,
-        w: usize,
-        x: [[usize; w]; h],
+        n: usize,
+        xy: [(usize, usize); n],
         q: usize,
         abcd: [(usize, usize, usize, usize); q],
     }
 
-    let mut z = vec![vec![0; w + 1]; h + 1];
+    let mut z = vec![vec![0; 1509]; 1509];
 
-    for i in 0..h {
-        for j in 0..w {
-            z[i + 1][j + 1] = z[i + 1][j] + x[i][j];
-        }
+    for (x, y) in xy {
+        z[x][y] += 1;
     }
 
-    for j in 0..w {
-        for i in 0..h {
-            z[i + 1][j + 1] += z[i][j + 1];
+    let mut t = vec![vec![0; 1509]; 1509];
+    for i in 1..1509 {
+        for j in 1..1509 {
+            t[i][j] = t[i][j - 1] + z[i][j];
+        }
+    }
+    for j in 1..1509 {
+        for i in 1..1509 {
+            t[i][j] += t[i - 1][j];
         }
     }
 
     for (a, b, c, d) in abcd {
-        println!("{}", z[c][d] + z[a - 1][b - 1] - z[a - 1][d] - z[c][b - 1]);
+        println!("{}", t[c][d] + t[a - 1][b - 1] - t[a - 1][d] - t[c][b - 1]);
     }
 }
