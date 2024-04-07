@@ -3,23 +3,18 @@ use proconio::input;
 fn main() {
     input! {
         n: usize,
-        x: usize,
-        a: [usize; n],
+        mut a: [usize; n],
+        q: usize,
+        x: [usize; q],
     }
 
-    let (mut l, mut r) = (0, n - 1);
+    a.sort();
 
-    while l <= r {
-        let m = (l + r) / 2;
-        if x < a[m] {
-            r = m - 1;
-        }
-        if x == a[m] {
-            println!("{}", m + 1);
-            return;
-        }
-        if x > a[m] {
-            l = m + 1;
+    for i in x {
+        let result = a.binary_search(&i);
+        match result {
+            Ok(index) => println!("{}", index),
+            Err(index) => println!("{}", index),
         }
     }
 }
