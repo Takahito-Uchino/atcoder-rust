@@ -1,28 +1,25 @@
-use std::collections::HashMap;
-
 use proconio::input;
 
 fn main() {
     input! {
         n: usize,
-        ac: [(usize, usize); n],
+        x: usize,
+        a: [usize; n],
     }
 
-    let mut mins = HashMap::new();
+    let (mut l, mut r) = (0, n - 1);
 
-    for (a, c) in ac {
-        mins.entry(c).or_insert(a);
-        if mins[&c] > a {
-            mins.insert(c, a);
+    while l <= r {
+        let m = (l + r) / 2;
+        if x < a[m] {
+            r = m - 1;
+        }
+        if x == a[m] {
+            println!("{}", m + 1);
+            return;
+        }
+        if x > a[m] {
+            l = m + 1;
         }
     }
-
-    let mut ans = 0;
-    for (_, v) in mins {
-        if v > ans {
-            ans = v;
-        }
-    }
-
-    println!("{}", ans);
 }
