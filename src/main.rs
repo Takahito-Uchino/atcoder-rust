@@ -2,30 +2,19 @@ use proconio::input;
 
 fn main() {
     input! {
-        n: usize,
-        k: usize,
-        a: [usize; n],
+        n: f64,
     }
 
-    let mut l = 0;
-    let mut r = 1000000000;
+    let (mut l, mut r) = (0., 100.);
 
-    while l < r {
-        let m = (l + r) / 2;
-        if check(m, n, k, a.clone()) {
+    for _ in 0..20 {
+        let m = (l + r) / 2.;
+        if m * m * m + m > n {
             r = m;
         } else {
-            l = m + 1;
+            l = m;
         }
     }
 
     println!("{}", l);
-}
-
-fn check(x: usize, n: usize, k: usize, a: Vec<usize>) -> bool {
-    let mut sum = 0;
-    for i in 0..n {
-        sum += x / a[i];
-    }
-    sum >= k
 }
