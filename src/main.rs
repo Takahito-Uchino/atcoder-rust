@@ -2,19 +2,27 @@ use proconio::input;
 
 fn main() {
     input! {
-        n: f64,
+        n: usize,
+        k: usize,
+        a: [usize; n],
     }
 
-    let (mut l, mut r) = (0., 100.);
-
-    for _ in 0..20 {
-        let m = (l + r) / 2.;
-        if m * m * m + m > n {
-            r = m;
+    let mut r = vec![0; 100009];
+    for i in 1..n {
+        if i == 1 {
+            r[i] = 1;
         } else {
-            l = m;
+            r[i] = r[i - 1];
+        }
+        while r[i] < n && a[r[i]] - a[i - 1] <= k {
+            r[i] += 1;
         }
     }
 
-    println!("{}", l);
+    let mut answer = 0;
+    for i in 1..n {
+        answer += r[i] - i;
+    }
+
+    println!("{}", answer);
 }
