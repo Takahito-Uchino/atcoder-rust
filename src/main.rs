@@ -3,18 +3,29 @@ use proconio::input;
 fn main() {
     input! {
         n: usize,
-        mut a: [usize; n],
-        q: usize,
-        x: [usize; q],
+        k: usize,
+        a: [usize; n],
     }
 
-    a.sort();
+    let mut l = 0;
+    let mut r = 1000000000;
 
-    for i in x {
-        let result = a.binary_search(&i);
-        match result {
-            Ok(index) => println!("{}", index),
-            Err(index) => println!("{}", index),
+    while l < r {
+        let m = (l + r) / 2;
+        if check(m, n, k, a.clone()) {
+            r = m;
+        } else {
+            l = m + 1;
         }
     }
+
+    println!("{}", l);
+}
+
+fn check(x: usize, n: usize, k: usize, a: Vec<usize>) -> bool {
+    let mut sum = 0;
+    for i in 0..n {
+        sum += x / a[i];
+    }
+    sum >= k
 }
