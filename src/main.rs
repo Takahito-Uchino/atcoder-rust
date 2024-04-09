@@ -1,34 +1,37 @@
 use proconio::input;
 
+fn enumerate(a: Vec<i64>) -> Vec<i64> {
+    let mut sum_list = Vec::new();
+    for i in 0..(1 << a.len()) {
+        let mut sum = 0;
+        for j in 0..a.len() {
+            if (i >> j) & 1 == 1 {
+                sum += a[j];
+            }
+        }
+        sum_list.push(sum);
+    }
+    sum_list
+}
+
 fn main() {
     input! {
         n: usize,
-        k: usize,
-        a: [usize; n],
-        b: [usize; n],
-        c: [usize; n],
-        d: [usize; n],
+        k: i64,
+        a: [i64; n],
     }
 
-    let mut p = Vec::new();
-    let mut q = Vec::new();
+    let (l1, l2) = a.split_at(n / 2);
+    let sum1 = enumerate(l1.to_vec());
+    let sum2 = enumerate(l2.to_vec());
 
-    for i in 0..n {
-        for j in 0..n {
-            p.push(a[i] + b[j]);
-        }
-    }
+    let mut sum1 = sum1;
+    let mut sum2 = sum2;
+    sum1.sort();
+    sum2.sort();
 
-    for i in 0..n {
-        for j in 0..n {
-            q.push(c[i] + d[j]);
-        }
-    }
-
-    q.sort();
-
-    for i in 0..n*n {
-        if q.binary_search(&(k - p[i])).is_ok() {
+    for &s in &sum1 {
+        if let Ok(_) = sum2.binary_search(&(k - s)) {
             println!("Yes");
             return;
         }
