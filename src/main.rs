@@ -3,36 +3,37 @@ use proconio::input;
 fn main() {
     input! {
         n: usize,
-        k: i64,
-        a: [i64; n],
+        k: usize,
+        a: [usize; n],
+        b: [usize; n],
+        c: [usize; n],
+        d: [usize; n],
     }
 
-    let mut s = vec![0i64; n + 1];
-    let mut r = vec![0usize; n + 1];
+    let mut p = Vec::new();
+    let mut q = Vec::new();
 
-    for i in 1..=n {
-        s[i] = s[i - 1] + a[i - 1];
-    }
-
-    for i in 1..=n {
-        if i == 1 {
-            r[i] = 0;
-        } else {
-            r[i] = r[i - 1];
-        }
-        while r[i] < n && sum(&s, i, r[i] + 1) <= k {
-            r[i] += 1;
+    for i in 0..n {
+        for j in 0..n {
+            p.push(a[i] + b[j]);
         }
     }
 
-    let mut answer = 0i64;
-    for i in 1..=n {
-        answer += (r[i] as i64) - (i as i64) + 1;
+    for i in 0..n {
+        for j in 0..n {
+            q.push(c[i] + d[j]);
+        }
     }
 
-    println!("{}", answer);
+    q.sort();
+
+    for i in 0..n*n {
+        if q.binary_search(&(k - p[i])).is_ok() {
+            println!("Yes");
+            return;
+        }
+    }
+
+    println!("No");
 }
 
-fn sum(s: &Vec<i64>, l: usize, r: usize) -> i64 {
-    s[r] - s[l - 1]
-}
