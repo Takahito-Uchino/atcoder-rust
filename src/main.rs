@@ -1,25 +1,20 @@
-use std::collections::HashSet;
-
 use proconio::input;
 
 fn main() {
     input! {
         n: usize,
-        a: [usize; n],
+        a: [usize; n - 1],
+        b: [usize; n - 2],
     }
 
-    let a_set = a.iter().collect::<HashSet<_>>();
-    let mut t = a_set.iter().map(|&&x| x).collect::<Vec<_>>();
-    t.sort_unstable();
+    let mut dp = Vec::new();
+    dp.push(0);
+    dp.push(a[0]);
 
-    let mut b = Vec::new();
-    for i in a {
-        match t.binary_search(&i) {
-            Ok(index) => b.push(index + 1),
-            Err(_) => unreachable!(),
-        }
+    for i in 2..n {
+        dp.push((dp[i - 1] + a[i - 1]).min(dp[i - 2] + b[i - 2]));
     }
 
-    println!("{}", b.into_iter().map(|n| n.to_string()).collect::<Vec<_>>().join(" "));
+    println!("{}", dp[n - 1]);
 }
 
