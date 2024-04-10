@@ -1,42 +1,25 @@
-use proconio::input;
+use std::collections::HashSet;
 
-fn enumerate(a: Vec<i64>) -> Vec<i64> {
-    let mut sum_list = Vec::new();
-    for i in 0..(1 << a.len()) {
-        let mut sum = 0;
-        for j in 0..a.len() {
-            if (i >> j) & 1 == 1 {
-                sum += a[j];
-            }
-        }
-        sum_list.push(sum);
-    }
-    sum_list
-}
+use proconio::input;
 
 fn main() {
     input! {
         n: usize,
-        k: i64,
-        a: [i64; n],
+        a: [usize; n],
     }
 
-    let (l1, l2) = a.split_at(n / 2);
-    let sum1 = enumerate(l1.to_vec());
-    let sum2 = enumerate(l2.to_vec());
+    let a_set = a.iter().collect::<HashSet<_>>();
+    let mut t = a_set.iter().map(|&&x| x).collect::<Vec<_>>();
+    t.sort_unstable();
 
-    let mut sum1 = sum1;
-    let mut sum2 = sum2;
-    sum1.sort();
-    sum2.sort();
-
-    for &s in &sum1 {
-        if let Ok(_) = sum2.binary_search(&(k - s)) {
-            println!("Yes");
-            return;
+    let mut b = Vec::new();
+    for i in a {
+        match t.binary_search(&i) {
+            Ok(index) => b.push(index + 1),
+            Err(_) => unreachable!(),
         }
     }
 
-    println!("No");
+    println!("{}", b.into_iter().map(|n| n.to_string()).collect::<Vec<_>>().join(" "));
 }
 
